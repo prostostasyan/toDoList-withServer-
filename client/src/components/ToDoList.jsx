@@ -2,7 +2,7 @@ import React, {useEffect, useState} from 'react'
 import s from './ToDoList.module.css';
 import {deleteData, getData, postData} from "../api/api";
 
-let Form = (props) => {
+const Form = (props) => {
     const [value, setValue] = useState('');
 
     const handleChange = (elem) => {
@@ -38,36 +38,39 @@ function ToDoItem(props) {
 
 function ToDoList() {
     const [items, setItems] = useState([]);
+    const [numRend,setRend] = useState(1)
+    const [error,setError] =  useState('')
     useEffect(()=>{
+        console.log(numRend)
         getData('posts')
             .then(res=>{
-                setItems([...res.data.data])
+                if(res.error === null){
+                    setItems([...res.data.data]);
+                    console.log('numRend');
+                }else{
+                    const err=String(res.error)
+                    setError(err);
+                }
             })
-    })
+    },[numRend]);
 
     function addItem(text) {
-        console.log(text)
+        setTimeout(()=>setRend(numRend+1),100);
         postData('posts',text)
             .then(err=>console.log(err))
-
-        console.log(items)
     }
 
     function deleteItem(key) {
-        console.log(key)
+        setTimeout(()=>setRend(numRend+1),100);
         deleteData('posts/', key)
             .then(err=>console.log(err))
-        console.log(items)
     }
-
-
-
-
     return (
         <div className={s.todoListMain}>
             <div className={s.header}>
                 <Form onSubmit={addItem}/>
             </div>
+            {(items.length === 0)&& <span className={s.error}>{error}</span>}
             <ToDoItem entries={items}
                       delete={deleteItem}
             />
@@ -75,8 +78,7 @@ function ToDoList() {
     )
 }
 
-
-let ToDoListContainer = () => <div className={s.container}>
+const ToDoListContainer = () => <div className={s.container}>
     <ToDoList/>
 </div>
 

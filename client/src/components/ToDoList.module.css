@@ -66,3 +66,12 @@
     background-color: pink;
     cursor: pointer;
 }
+
+
+.error{
+    display: inline-block;
+    color: crimson;
+    margin-top:20px;
+    font-size: 20px;
+    font-weight: 900;
+}
