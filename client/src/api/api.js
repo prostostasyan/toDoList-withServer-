@@ -1,37 +1,38 @@
 import axios from "axios";
-const port=3000;
+
+const port = 3000;
 const http = `http://localhost:${port}/`
-export const getData=(category)=>{
+export const getData = (category) => {
     return axios
-        .get(http+category)
-        .then(res=>{
-            return {data:res, error:null}
+        .get(http + category)
+        .then(res => {
+            return {data: res, error: null}
         })
-        .catch(err=>{
-            return {data:null, error:err}
+        .catch(err => {
+            return {data: null, error: err}
         })
 }
 
-export const postData=(category,data)=>{
+export const postData = (category, data) => {
     return axios
-        .post(http+category,{'text':data})
-        .then(res=>{
-            return {data:res, error:null}
+        .post(http + category, {'text': data})
+        .then(res => {
+            return {data: res, error: null}
         })
-        .catch(err=>{
+        .catch(err => {
             console.log(err)
-            return {data:null, error:err}
+            return {data: null, error: err}
         })
 }
-export const deleteData=(category,id)=>{
-    console.log(http+category+id)
+export const deleteData = (category, id) => {
+    console.log(http + category + id)
     return axios
-        .delete(http+category+id)
-        .then(res=>{
-            return {data:res, error:null}
+        .delete(http + category + id)
+        .then(res => {
+            return {data: res, error: null}
         })
-        .catch(err=>{
+        .catch(err => {
             console.log(err)
-            return {data:null, error:err}
+            return {data: null, error: err}
         })
 }

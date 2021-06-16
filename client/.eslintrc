@@ -1,0 +1,6 @@
+{
+  "plugins": [
+    "better-styled-components"
+  ],
+  "parser": "babel-eslint"
+}

@@ -1,40 +1,24 @@
 import React, {useEffect, useState} from 'react'
-import s from './ToDoList.module.css';
 import {deleteData, getData, postData} from "../api/api";
+import Form from "./Form";
+import ToDoItem from "./ToDoItem";
+import styled from "styled-components";
 
-const Form = (props) => {
-    const [value, setValue] = useState('');
+const ToDoListWrap = styled.div`
+    margin-top: 30px;
+    display:block;
+    width: 50%;
+    margin-left:auto;
+    margin-right:auto;
+`
+const Error = styled.span`
+    display: inline-block;
+    color: crimson;
+    margin-top:20px;
+    font-size: 20px;
+    font-weight: 900;
+`
 
-    const handleChange = (elem) => {
-        setValue(elem.target.value)
-    }
-    const handleSubmit = (elem) => {
-        elem.preventDefault();
-        if (value !== '') {
-            props.onSubmit(value);
-            setValue('')
-        }
-    }
-
-    return (
-        <form>
-            <input name="NewItem" type='text' value={value} placeholder="введите задачу" onChange={handleChange}/>
-            <button onClick={handleSubmit}>Добавить</button>
-        </form>)
-}
-
-
-function ToDoItem(props) {
-
-    return (
-        <ul className={s.theList}>
-            {props.entries.map((item) =>
-                <li onClick={() => props.delete(item.id)} key={item.id}> {item.text} </li>
-            )}
-        </ul>
-    )
-
-}
 
 function ToDoList() {
     const [items, setItems] = useState([]);
@@ -46,9 +30,11 @@ function ToDoList() {
             .then(res => {
                 if (res.error === null) {
                     setItems([...res.data.data]);
+                    setError('');
                     console.log('numRend');
                 } else {
-                    const err = String(res.error)
+                    const err = String(res.error);
+                    console.log(res.error);
                     setError(err);
                 }
             })
@@ -56,37 +42,29 @@ function ToDoList() {
 
     function addItem(text) {
         postData('posts', text)
-            .then(data => {
-                setRend(numRend + 1)
-                console.log(data)
+            .then(() => {
+                setRend(numRend + 1);
             })
     }
 
     function deleteItem(key) {
         deleteData('posts/', key)
-            .then(data => {
+            .then(() => {
                 setRend(numRend + 1)
-                console.log(data)
             })
     }
 
     return (
-        <div className={s.todoListMain}>
-            <div className={s.header}>
-                <Form onSubmit={addItem}/>
-            </div>
-            {(items.length === 0) && <span className={s.error}>{error}</span>}
+        <ToDoListWrap>
+            <Form onSubmit={addItem}/>
+            {(error !== '') && <Error>{error}</Error>}
             <ToDoItem entries={items}
                       delete={deleteItem}
             />
-        </div>
+        </ToDoListWrap>
     )
 }
 
-const ToDoListContainer = () => <div className={s.container}>
-    <ToDoList/>
-</div>
-
-export default ToDoListContainer;
+export default ToDoList;
 
 
