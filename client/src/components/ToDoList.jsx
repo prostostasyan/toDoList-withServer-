@@ -10,7 +10,7 @@ const Form = (props) => {
     }
     const handleSubmit = (elem) => {
         elem.preventDefault();
-        if(value !== ''){
+        if (value !== '') {
             props.onSubmit(value);
             setValue('')
         }
@@ -18,7 +18,7 @@ const Form = (props) => {
 
     return (
         <form>
-            <input name="NewItem" type='text' value ={value} placeholder="введите задачу" onChange={handleChange}/>
+            <input name="NewItem" type='text' value={value} placeholder="введите задачу" onChange={handleChange}/>
             <button onClick={handleSubmit}>Добавить</button>
         </form>)
 }
@@ -38,39 +38,44 @@ function ToDoItem(props) {
 
 function ToDoList() {
     const [items, setItems] = useState([]);
-    const [numRend,setRend] = useState(1)
-    const [error,setError] =  useState('')
-    useEffect(()=>{
+    const [numRend, setRend] = useState(1);
+    const [error, setError] = useState('');
+    useEffect(() => {
         console.log(numRend)
         getData('posts')
-            .then(res=>{
-                if(res.error === null){
+            .then(res => {
+                if (res.error === null) {
                     setItems([...res.data.data]);
                     console.log('numRend');
-                }else{
-                    const err=String(res.error)
+                } else {
+                    const err = String(res.error)
                     setError(err);
                 }
             })
-    },[numRend]);
+    }, [numRend]);
 
     function addItem(text) {
-        setTimeout(()=>setRend(numRend+1),100);
-        postData('posts',text)
-            .then(err=>console.log(err))
+        postData('posts', text)
+            .then(data => {
+                setRend(numRend + 1)
+                console.log(data)
+            })
     }
 
     function deleteItem(key) {
-        setTimeout(()=>setRend(numRend+1),100);
         deleteData('posts/', key)
-            .then(err=>console.log(err))
+            .then(data => {
+                setRend(numRend + 1)
+                console.log(data)
+            })
     }
+
     return (
         <div className={s.todoListMain}>
             <div className={s.header}>
                 <Form onSubmit={addItem}/>
             </div>
-            {(items.length === 0)&& <span className={s.error}>{error}</span>}
+            {(items.length === 0) && <span className={s.error}>{error}</span>}
             <ToDoItem entries={items}
                       delete={deleteItem}
             />

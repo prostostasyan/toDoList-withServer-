@@ -28,7 +28,6 @@ export const deleteData=(category,id)=>{
     return axios
         .delete(http+category+id)
         .then(res=>{
-
             return {data:res, error:null}
         })
         .catch(err=>{
