@@ -7,13 +7,15 @@ const Input = styled.input`
     padding: 10px;
     font-size: 16px;
     border: 2px solid #FFF;
-    width: 75%;
+    width: ${(window.screen.width < 962) ? `44%` : '75%'};
     :focus{
         outline: none;
   }
 `
 const Button = styled.button`
+    float: left;
     width: 20%;
+    min-width: 86px;
     padding: 10px;
     font-size: 16px;
     background-color: #0066FF;
@@ -32,7 +34,6 @@ const Button = styled.button`
 
 const Form = (props) => {
     const [value, setValue] = useState('');
-
     const handleChange = (elem) => {
         setValue(elem.target.value)
     }

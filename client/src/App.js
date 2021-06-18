@@ -4,10 +4,14 @@ import ToDoListContainer from "./components/ToDoList";
 import styled from 'styled-components';
 
 
-
 const AppWrapper = styled.div`
   background-color: cornflowerblue;
   padding: 40px 0;
+  min-width: 400px;
+  text-align: center;
+  max-width: 100%;
+  margin-left: auto;
+  margin-right: auto;
 `
 
 
