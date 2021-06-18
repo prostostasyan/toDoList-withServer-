@@ -1,0 +1,16 @@
+{
+  "posts": [
+    {
+      "text": "test1",
+      "id": 1
+    },
+    {
+      "text": "test2",
+      "id": 2
+    },
+    {
+      "text": "test13",
+      "id": 3
+    }
+  ]
+}

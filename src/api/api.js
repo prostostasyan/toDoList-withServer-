@@ -1,6 +1,6 @@
 import axios from "axios";
 
-const port = 3000;
+const port = 3004;
 const http = `http://localhost:${port}/`
 export const getData = (category) => {
     return axios
@@ -25,7 +25,7 @@ export const postData = (category, data) => {
         })
 }
 export const deleteData = (category, id) => {
-    console.log(http + category + id)
+    // console.log(http + category + id)
     return axios
         .delete(http + category + id)
         .then(res => {

@@ -1,7 +1,6 @@
 import React from 'react'
-import './App.css';
+import styled from 'styled-components'; 
 import ToDoListContainer from "./components/ToDoList";
-import styled from 'styled-components';
 
 
 const AppWrapper = styled.div`
@@ -18,7 +17,7 @@ const AppWrapper = styled.div`
 function App() {
     return (
         <AppWrapper>
-            <div className="App">
+            <div>
                 <ToDoListContainer/>
             </div>
         </AppWrapper>
