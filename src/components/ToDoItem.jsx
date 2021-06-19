@@ -1,5 +1,6 @@
-import React from "react";
-import styled from "styled-components";
+import React from 'react';
+import styled from 'styled-components';
+import PropTypes from 'prop-types';
 
 const Li = styled.li`
   color: #333;
@@ -16,10 +17,14 @@ const Li = styled.li`
   }
 `;
 
-const ToDItem = ({ onDelete, text, id }) => (
+const ToDoItem = ({onDelete, text, id}) => (
   <Li onClick={() => onDelete(id)}> {text} </Li>
 );
 
-// TODO: PropTypes
+ToDoItem.propTypes = {
+  text: PropTypes.string,
+  onDelete: PropTypes.func,
+  id: PropTypes.number,
+};
 
-export default ToDItem;
+export default ToDoItem;

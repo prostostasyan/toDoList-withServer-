@@ -1,8 +1,8 @@
-import React, { useEffect, useState, useCallback } from "react";
-import { deleteData, getData, postData } from "../api/api";
-import Form from "./Form";
-import ToDoItem from "./ToDoItem";
-import styled from "styled-components";
+import React, {useEffect, useState} from 'react';
+import {deleteData, getData, postData} from '../api/api';
+import Form from './Form';
+import ToDoItem from './ToDoItem';
+import styled from 'styled-components';
 
 const ToDoListWrap = styled.div`
   margin-top: 30px;
@@ -11,6 +11,7 @@ const ToDoListWrap = styled.div`
   margin-left: auto;
   margin-right: auto;
 `;
+
 const Error = styled.span`
   display: inline-block;
   color: crimson;
@@ -18,6 +19,7 @@ const Error = styled.span`
   font-size: 20px;
   font-weight: 900;
 `;
+
 const Ul = styled.ul`
   clear: both;
   list-style: none;
@@ -28,50 +30,39 @@ const Ul = styled.ul`
 
 function ToDoList() {
   const [items, setItems] = useState([]);
-  const [numRend, setRend] = useState(1);
-  const [error, setError] = useState("");
+  const [error, setError] = useState('');
 
-  // TODO: async await
-  useEffect(() => {
-    console.log(numRend);
-    getData("posts").then((res) => {
-      if (res.error === null) {
-        setItems([...res.data.data]);
-        setError("");
-        console.log("numRend");
-      } else {
-        const err = String(res.error);
-        console.log(res.error);
-        setError(err);
-      }
-    });
-  }, [numRend]);
+  useEffect(async () => {
+    const response = await getData('posts');
+    if (response.error === null) {
+      setItems([...response.data.data]);
+      setError('');
+    } else {
+      const err = String(response.error);
+      console.log(response.error);
+      setError(err);
+    }
+  }, []);
 
-  // TODO: async await
-  function addItem(text) {
-    postData("posts", text).then((response) => {
-      if (!response.error) {
-        const data = response.data.data;
-        setItems((items) => [...items, data]);
-      }
-    });
-  }
+  const addItem = async (text) => {
+    const response = await postData('posts', text);
+    if (!response.error) {
+      const data = response.data.data;
+      setItems((prev) => [...prev, data]);
+    }
+  };
 
-  // TODO: async await
-
-  const deletePost = (key) => {
-
-    // TODO: Update logic to update items
-    deleteData("posts/", key).then(() => {
-      console.log(key);
-      setRend(numRend + 1);
-    });
+  const deletePost = async (key) => {
+    const response = await deleteData('posts', key);
+    if (!response.error) {
+      setItems(items.filter((item) => item.id !== key));
+    }
   };
 
   return (
     <ToDoListWrap>
       <Form onSubmit={addItem} />
-      {error !== "" && <Error>{error}</Error>}
+      {error !== '' && <Error>{error}</Error>}
       <Ul>
         {items.map((item) => (
           <ToDoItem
