@@ -1,8 +1,18 @@
 import React, {useEffect, useState} from 'react';
 import {deleteData, getData, postData, putData} from '../api/api';
+import {useSelector, useDispatch} from 'react-redux';
 import Form from './Form';
 import ToDoItem from './ToDoItem';
 import styled from 'styled-components';
+import {
+    addItems,
+    setError,
+    getAsyncItems,
+    selectError,
+    setCheck,
+    selectItems,
+    deleteItem,
+} from './toDoListSlice';
 
 const ToDoListWrap = styled.div`
     margin-top: 30px;
@@ -29,29 +39,35 @@ const Ul = styled.ul`
 `;
 
 function ToDoList() {
-    const [items, setItems] = useState([]);
-    const [error, setError] = useState('');
+    const items = useSelector(selectItems);
+    const error = useSelector(selectError);
 
-    useEffect(async () => {
-        const response = await getData('posts');
+    const dispatch = useDispatch();
 
-        if (response.error === null) {
-            setItems([...response.data.data]);
-            setError('');
-        } else {
-            const err = String(response.error);
-            setError(err);
-        }
-    }, []);
+    useEffect(
+        async () => {
+            const response = await getData('posts');
+            if (response.error === null) {
+                dispatch(addItems(response.data.data));
+                dispatch(setError(''));
+            } else {
+                const err = String(response.error);
+                dispatch(setError(err));
+            }
+        },
+        //     () => dispatch(getAsyncItems)
+        []
+    );
 
     const addItem = async (text) => {
         const response = await postData('posts', text);
         if (!response.error) {
             const data = response.data.data;
-            setItems((prev) => [...prev, data]);
+            dispatch(addItems(data));
+            dispatch(setError(''));
         } else {
             const err = String(response.error);
-            setError(err);
+            dispatch(setError(err));
         }
     };
 
@@ -63,33 +79,30 @@ function ToDoList() {
             state
         );
         if (!response.error) {
-            items.some((post) => {
-                if (post.id === id) {
-                    post.done = !post.done;
-                    return true;
-                }
-            });
-            setItems((items) => [...items]);
+            dispatch(setCheck(id));
+            dispatch(setError(''));
         } else {
             const err = String(response.error);
-            setError(err);
+            dispatch(setError(err));
         }
     };
 
     const deletePost = async (key) => {
         const response = await deleteData('posts', key);
         if (!response.error) {
-            setItems(items.filter((item) => item.id !== key));
+            dispatch(deleteItem(key));
+            dispatch(setError(''));
         } else {
             const err = String(response.error);
-            setError(err);
+            dispatch(setError(err));
         }
     };
-
+    //Ошибка!!! Если снова появляется интернет, не пропадает
     return (
         <ToDoListWrap>
             <Form onSubmit={addItem} />
             {error !== '' && <Error>{error}</Error>}
+
             <Ul>
                 {items.map((item) => (
                     <ToDoItem

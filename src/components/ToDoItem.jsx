@@ -4,7 +4,8 @@ import PropTypes from 'prop-types';
 
 const Li = styled.li`
     color: #333;
-    background-color: rgba(255, 255, 255, 0.5);
+    background-color: ${(props) =>
+        props.done ? 'rgba( 91, 194, 54, 0.5)' : 'rgba(255, 255, 255, 0.5)'};
     word-wrap: break-word;
     padding: 15px;
     margin-bottom: 15px;
@@ -18,6 +19,7 @@ const Check = styled.input.attrs({
     float: left;
     transform: scale(1.3);
 `;
+
 const Del = styled.button`
     float: right;
     transition: background-color 0.2s ease-out;
@@ -30,7 +32,7 @@ const Del = styled.button`
 `;
 
 const ToDoItem = ({onDelete, checkPost, text, id, done}) => (
-    <Li>
+    <Li done={done}>
         <Check checked={done} onChange={() => checkPost(id, !done)} />
         {text}
         <Del onClick={() => onDelete(id)}> x </Del>
