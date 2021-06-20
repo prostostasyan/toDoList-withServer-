@@ -9,34 +9,27 @@ export const toDoListSlice = createSlice({
     },
     reducers: {
         addItems: (state, action) => {
-            console.log(action);
-            if (state.error !== '') {
-                if (Array.isArray(action.payload)) {
-                    state.items = [...state.items, ...action.payload];
-                } else {
-                    state.items = [...state.items, action.payload];
-                }
+            if (Array.isArray(action.payload)) {
+                state.items = [...state.items, ...action.payload];
+            } else {
+                state.items = [...state.items, action.payload];
             }
         },
         setError: (state, action) => {
             state.error = action.payload;
         },
         setCheck: (state, action) => {
-            if (state.error !== '') {
-                state.items.some((post) => {
-                    if (post.id === action.payload) {
-                        post.done = !post.done;
-                        return true;
-                    }
-                });
-            }
+            state.items.some((post) => {
+                if (post.id === action.payload) {
+                    post.done = !post.done;
+                    return true;
+                }
+            });
         },
         deleteItem: (state, action) => {
-            if (state.error !== '') {
-                state.items = state.items.filter(
-                    (item) => item.id !== action.payload
-                );
-            }
+            state.items = state.items.filter(
+                (item) => item.id !== action.payload
+            );
         },
     },
 });

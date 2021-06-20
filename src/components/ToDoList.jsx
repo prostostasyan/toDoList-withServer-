@@ -1,4 +1,4 @@
-import React, {useEffect, useState} from 'react';
+import React, {useEffect} from 'react';
 import {deleteData, getData, postData, putData} from '../api/api';
 import {useSelector, useDispatch} from 'react-redux';
 import Form from './Form';
@@ -7,7 +7,7 @@ import styled from 'styled-components';
 import {
     addItems,
     setError,
-    getAsyncItems,
+    // getAsyncItems,
     selectError,
     setCheck,
     selectItems,
@@ -48,8 +48,8 @@ function ToDoList() {
         async () => {
             const response = await getData('posts');
             if (response.error === null) {
-                dispatch(addItems(response.data.data));
                 dispatch(setError(''));
+                dispatch(addItems(response.data.data));
             } else {
                 const err = String(response.error);
                 dispatch(setError(err));
@@ -63,8 +63,8 @@ function ToDoList() {
         const response = await postData('posts', text);
         if (!response.error) {
             const data = response.data.data;
-            dispatch(addItems(data));
             dispatch(setError(''));
+            dispatch(addItems(data));
         } else {
             const err = String(response.error);
             dispatch(setError(err));
@@ -79,8 +79,8 @@ function ToDoList() {
             state
         );
         if (!response.error) {
-            dispatch(setCheck(id));
             dispatch(setError(''));
+            dispatch(setCheck(id));
         } else {
             const err = String(response.error);
             dispatch(setError(err));
@@ -90,14 +90,13 @@ function ToDoList() {
     const deletePost = async (key) => {
         const response = await deleteData('posts', key);
         if (!response.error) {
-            dispatch(deleteItem(key));
             dispatch(setError(''));
+            dispatch(deleteItem(key));
         } else {
             const err = String(response.error);
             dispatch(setError(err));
         }
     };
-    //Ошибка!!! Если снова появляется интернет, не пропадает
     return (
         <ToDoListWrap>
             <Form onSubmit={addItem} />
