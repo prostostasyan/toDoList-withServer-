@@ -43,8 +43,8 @@ export const getAsyncItems = () => async (dispatch) => {
         dispatch(addItems([...response.data.data]));
         dispatch(setError(''));
     } else {
-        // const err = String(response.error);
-        dispatch(setError(''));
+        const err = String(response.error);
+        dispatch(setError(err));
     }
 };
 

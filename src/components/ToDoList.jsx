@@ -1,5 +1,5 @@
 import React, {useEffect} from 'react';
-import {deleteData, getData, postData, putData} from '../api/api';
+import {deleteData, postData, putData} from '../api/api';
 import {useSelector, useDispatch} from 'react-redux';
 import Form from './Form';
 import ToDoItem from './ToDoItem';
@@ -7,7 +7,7 @@ import styled from 'styled-components';
 import {
     addItems,
     setError,
-    // getAsyncItems,
+    getAsyncItems,
     selectError,
     setCheck,
     selectItems,
@@ -44,20 +44,9 @@ function ToDoList() {
 
     const dispatch = useDispatch();
 
-    useEffect(
-        async () => {
-            const response = await getData('posts');
-            if (response.error === null) {
-                dispatch(setError(''));
-                dispatch(addItems(response.data.data));
-            } else {
-                const err = String(response.error);
-                dispatch(setError(err));
-            }
-        },
-        //     () => dispatch(getAsyncItems)
-        []
-    );
+    useEffect(() => {
+        dispatch(getAsyncItems());
+    }, []);
 
     const addItem = async (text) => {
         const response = await postData('posts', text);
