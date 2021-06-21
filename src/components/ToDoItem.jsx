@@ -4,13 +4,21 @@ import PropTypes from 'prop-types';
 
 const Li = styled.li`
     color: #333;
+
     background-color: ${(props) =>
         props.done ? 'rgba( 91, 194, 54, 0.5)' : 'rgba(255, 255, 255, 0.5)'};
+    :nth-child(2n) {
+        background-color: ${(props) =>
+            props.done
+                ? 'rgba( 91, 194, 54, 0.5)'
+                : 'rgba(255, 255, 255, 0.25)'};
+    }
     word-wrap: break-word;
     padding: 15px;
     margin-bottom: 15px;
     border-radius: 5px;
     transition: background-color 0.2s ease-out;
+    text-decoration: ${(props) => (props.done ? 'line-through' : 'none')};
 `;
 
 const Check = styled.input.attrs({
@@ -18,6 +26,7 @@ const Check = styled.input.attrs({
 })`
     float: left;
     transform: scale(1.3);
+    cursor: pointer;
 `;
 
 const Del = styled.button`

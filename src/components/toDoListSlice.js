@@ -38,7 +38,6 @@ export const {addItems, setError, setCheck, deleteItem} = toDoListSlice.actions;
 
 export const getAsyncItems = () => async (dispatch) => {
     const response = await getData('posts');
-    console.log(response);
     if (response.error === null) {
         dispatch(addItems([...response.data.data]));
         dispatch(setError(''));

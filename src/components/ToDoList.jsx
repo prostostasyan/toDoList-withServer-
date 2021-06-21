@@ -41,7 +41,6 @@ const Ul = styled.ul`
 function ToDoList() {
     const items = useSelector(selectItems);
     const error = useSelector(selectError);
-
     const dispatch = useDispatch();
 
     useEffect(() => {
